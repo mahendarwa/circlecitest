@@ -40,8 +40,14 @@ workflows:
   version: 2
   tfsec:
     jobs:
-      - plan-apply
+      - tfsec
       - hold-apply:
           type: approval
           requires:
             - plan-apply
+      - plan-appply
+      - hold-apply:
+          type: approval
+          requires:
+            - plan-apply
+
