@@ -1,53 +1,16 @@
-version: 2
-
+version: '2.1'
+orbs:
+  tfsec: mycodeself/tfsec-orb@1.0.5
 jobs:
-  tfsec:
-    working_directory: /tmp/project
-    docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+  scan-example:
+    executor: tfsec/default
     steps:
       - checkout
-      - run:
-          name: terraform init & plan
-          command: |
-            hostname
-            #terraform init -input=false
-           # terraform plan -out tfapply -var-file variables.tfvars
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-  plan-apply:
-    working_directory: /tmp/project
-    docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
-    steps:
-      - checkout
-      - run:
-          name: terraform init & plan
-          command: |
-            ls
-            pwd
-            whoami
-            hostname
-            #terraform init -input=false
-           # terraform plan -out tfapply -var-file variables.tfvars
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
+      - tfsec/scan:
+          directory: path/to/tfcode
+          exclude-checks: 'GEN001,GCP001,GCP002'
+          tfvars-file: path/to/terraform.tfvars
 workflows:
-  version: 2
-  tfsec:
+  analyze-tf-code:
     jobs:
-      - tfsec
-      - hold-apply:
-          type: approval
-          requires:
-            - plan-apply
-      - plan-apply
-      - hold-apply:
-          type: approval
-          requires:
-            - plan-apply
-
+      - scan-example
