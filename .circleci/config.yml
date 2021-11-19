@@ -1,16 +1,27 @@
 version: 2.1
 orbs:
-  tfsec: mycodeself/tfsec@1.1.0
+  python: circleci/python@1.2
 jobs:
-  scan-example:
-    executor: tfsec/default
+  build-and-test:
+    parallelism: 2
+    docker:
+      - image: cimg/python:3.8
     steps:
       - checkout
-      - tfsec/scan:
-          directory: path/to/tfcode
-          exclude-checks: 'GEN001,GCP001,GCP002'
-          tfvars-file: path/to/terraform.tfvars
+      - python/install-packages:
+          pkg-manager: pip
+      - run:
+          name: Run tests
+          command: |
+            set -e
+            TEST_FILES=$(circleci tests glob "openapi_server/**/test_*.py" | circleci tests split --split-by=timings)
+            mkdir -p test-results
+            pytest --verbose --junitxml=test-results/junit.xml $TEST_FILES
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
 workflows:
-  analyze-tf-code:
+  sample:
     jobs:
-      - scan-example
+      - build-and-test
