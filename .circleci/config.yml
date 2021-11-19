@@ -3,17 +3,33 @@ version: 2.1
 orbs:
 #  slack: circleci/slack@4.1
   tfsec: mycodeself/tfsec@1.1.0
+executors:
+  terraform:
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
 jobs:
-  single-job-lifecycle:
+  tfsec:
     executor: tfsec/default
     steps:
       - checkout
       - run: ls
       - run: which tfsec
       - run: tfsec .
+  plan:
+    executor: terraform
+    parameters:
+      tfenv:
+        type: string
+        default: non
+    steps:
+      - checkout
+      - run:
+          name: terraform init & plan
+          command: terraform init
 
 
 workflows:
   analyze-tf-code:
     jobs:
       - single-job-lifecycle
+      - plan
