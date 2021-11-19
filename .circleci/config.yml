@@ -16,3 +16,12 @@ jobs:
           name: terraform init & plan
           command: terraform init
 #      - <<: *persist
+
+workflows:
+  aws-infrastructure-main:
+#    when: << pipeline.parameters.main >>
+    jobs:
+      #- tfsec
+      - plan:
+#          tfenv: 'main'
+#      - <<: *hold-apply
