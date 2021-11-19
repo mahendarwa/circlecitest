@@ -3,9 +3,16 @@ version: 2.1
 orbs:
 #  slack: circleci/slack@4.1
   terraform: circleci/terraform@3.0.0
+jobs:
+  single-job-lifecycle:
+    executor: terraform/default
+    steps:
+      - checkout
+      - run:
+          name: terraform init & plan
+          command: terraform init
+
 workflows:
-  deploy_infrastructure:
+  analyze-tf-code:
     jobs:
-      - terraform/fmt:
-          checkout: true
-          context: terraform
+      - single-job-lifecycle
