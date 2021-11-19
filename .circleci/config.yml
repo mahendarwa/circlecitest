@@ -31,5 +31,5 @@ jobs:
 workflows:
   analyze-tf-code:
     jobs:
-      - single-job-lifecycle
+      - tfsec
       - plan
