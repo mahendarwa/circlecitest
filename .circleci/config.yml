@@ -18,10 +18,6 @@ jobs:
 #      - <<: *persist
 
 workflows:
-  aws-infrastructure-main:
-#    when: << pipeline.parameters.main >>
+  analyze-tf-code:
     jobs:
-      #- tfsec
-      - plan:
-#          tfenv: 'main'
-#      - <<: *hold-apply
+      - plan
