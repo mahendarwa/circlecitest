@@ -1,11 +1,25 @@
-version: 2.1
+version: '2.1'
+orbs:
+  terraform: circleci/terraform@x.y.z
 jobs:
-  build:
-    docker:
-      - image: cimg/node:14.10.1 # the primary container, where your job's commands are run
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+  single-job-lifecycle:
+    executor: terraform/default
     steps:
-      - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
+      - checkout
+      - terraform/init:
+          path: .
+      - terraform/validate:
+          path: .
+      - terraform/fmt:
+          path: .
+      - terraform/plan:
+          path: .
+      - terraform/apply:
+          path: .
+      - terraform/destroy:
+          path: .
+    working_directory: ~/src
+workflows:
+  single-job-lifecycle:
+    jobs:
+      - single-job-lifecycle
