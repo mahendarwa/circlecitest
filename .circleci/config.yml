@@ -1,23 +1,11 @@
 version: 2.1
-executors:
-  terraform:
-    docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
-jobs:
-  plan:
-    executor: terraform
-    parameters:
-      tfenv:
-        type: string
-        default: non
-    steps:
-      - checkout
-      - run:
-          name: terraform init & plan
-          command: terraform init
-#      - <<: *persist
 
+orbs:
+#  slack: circleci/slack@4.1
+  tfsec: circleci/terraform@3.0.0
 workflows:
-  analyze-tf-code:
+  deploy_infrastructure:
     jobs:
-      - plan
+      - terraform/fmt:
+          checkout: true
+          context: terraform
