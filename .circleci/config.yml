@@ -1,6 +1,6 @@
 version: '2.1'
 orbs:
-  tfsec: mycodeself/tfsec@1.1.0
+  tfsec: mycodeself/tfsec-orb@1.0.5
 jobs:
   scan-example:
     executor: tfsec/default
