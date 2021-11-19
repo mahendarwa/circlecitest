@@ -1,11 +1,18 @@
 version: 2.1
-orbs:
-  tfsec: mycodeself/tfsec-orb@1.0.5
+executors:
+  terraform:
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
 jobs:
-  build:
+  plan:
+    executor: terraform
+    parameters:
+      tfenv:
+        type: string
+        default: non
     steps:
-      - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
-      - run: which tfsec
-      - run: tfsec .
-#       - run: terraform plan
+      - checkout
+      - run:
+          name: terraform init & plan
+          command: terraform init
+#      - <<: *persist
