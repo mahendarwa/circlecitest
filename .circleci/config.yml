@@ -1,12 +1,11 @@
 version: 2.1
+orbs:
+  tfsec: mycodeself/tfsec-orb@1.0.5
 jobs:
   build:
-    docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
-
     steps:
       - checkout # check out the code in the project directory
       - run: echo "hello world" # run the `echo` command
-      - run: hostname
-      - run: terraform init
-      - run: terraform plan
+      - run: which tfsec
+      - run: tfsec .
+#       - run: terraform plan
