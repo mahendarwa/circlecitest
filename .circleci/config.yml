@@ -2,15 +2,15 @@ version: 2.1
 
 orbs:
 #  slack: circleci/slack@4.1
-  terraform: circleci/terraform@3.0.0
+  tfsec: mycodeself/tfsec@1.1.0
 jobs:
   single-job-lifecycle:
-    executor: terraform/default
+    executor: tfsec/default
     steps:
       - checkout
-      - run: terraform init
-      - run: terraform plan
       - run: ls
+      - run: which tfsec
+
 
 workflows:
   analyze-tf-code:
