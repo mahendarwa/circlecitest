@@ -10,6 +10,7 @@ jobs:
       - checkout
       - run: ls
       - run: which tfsec
+      - run: tfsec .
 
 
 workflows:
