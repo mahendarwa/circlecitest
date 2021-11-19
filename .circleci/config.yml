@@ -8,9 +8,9 @@ jobs:
     executor: terraform/default
     steps:
       - checkout
-      - run:
-          name: terraform init & plan
-          command: terraform init
+      - run: terraform init
+      - run: terraform plan
+      - run: ls
 
 workflows:
   analyze-tf-code:
