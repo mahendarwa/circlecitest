@@ -4,15 +4,14 @@ orbs:
 #  slack: circleci/slack@4.1
   tfsec: mycodeself/tfsec@1.1.0
 jobs:
-  single-job-lifecycle:
-    executor: tfsec/default
+  example-job:
+    docker:
+      # replace with your preferred image
+      - image: cimg/base:stable
     steps:
-      - checkout
-      - run: ls
-      - run: which tfsec
-
-
+      - tfsec/install:
+          version: latest 
 workflows:
-  analyze-tf-code:
+  example-workflow:
     jobs:
-      - single-job-lifecycle
+      - example-job
