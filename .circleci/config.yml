@@ -12,9 +12,8 @@ jobs:
     executor: tfsec/default
     steps:
       - checkout
-      - run: ls
-      - run: which tfsec
       - run: tfsec .
+      - run: echo $?
   plan:
     executor: terraform
     parameters:
