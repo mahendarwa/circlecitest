@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
 #  slack: circleci/slack@4.1
-  tfsec: circleci/terraform@3.0.0
+  terraform: circleci/terraform@3.0.0
 workflows:
   deploy_infrastructure:
     jobs:
